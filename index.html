@@ -6,191 +6,241 @@
   <title>ELEVO – Aufgaben</title>
   <style>
     :root {
-      --bg: #0f0f10;
-      --surface: #1a1a1d;
-      --border: #2a2a2e;
-      --accent: #6c63ff;
-      --accent2: #a78bfa;
-      --text: #e8e8ea;
-      --muted: #888;
-      --red: #ef4444;
-      --yellow: #f59e0b;
-      --green: #22c55e;
-      --blue: #3b82f6;
+      --bg: #0f0f10; --surface: #1a1a1d; --surface2: #222226;
+      --border: #2a2a2e; --accent: #6c63ff; --accent2: #a78bfa;
+      --text: #e8e8ea; --muted: #777;
+      --red: #ef4444; --yellow: #f59e0b; --green: #22c55e; --blue: #3b82f6;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; min-height: 100dvh; }
+    body { background: var(--bg); color: var(--text); font-family: system-ui,-apple-system,sans-serif; min-height: 100dvh; }
 
-    /* ─── Setup ─── */
-    #setup-screen {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; min-height: 100dvh; padding: 24px; gap: 20px;
+    /* Setup */
+    #setup-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100dvh; padding:24px; gap:20px; }
+    #setup-screen h1 { font-size:1.5rem; font-weight:700; }
+    #setup-screen p { color:var(--muted); font-size:0.9rem; text-align:center; max-width:320px; }
+    .input-group { width:100%; max-width:360px; display:flex; flex-direction:column; gap:8px; }
+    label { font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+    input, textarea, select {
+      background:var(--surface); border:1px solid var(--border); color:var(--text);
+      border-radius:10px; padding:12px 14px; font-size:0.95rem; width:100%; outline:none; transition:border-color 0.15s;
     }
-    #setup-screen h1 { font-size: 1.5rem; font-weight: 700; }
-    #setup-screen p { color: var(--muted); font-size: 0.9rem; text-align: center; max-width: 320px; }
-    .input-group { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 8px; }
-    label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    input[type="text"], textarea, select {
-      background: var(--surface); border: 1px solid var(--border); color: var(--text);
-      border-radius: 10px; padding: 12px 14px; font-size: 1rem; width: 100%;
-      outline: none; transition: border-color 0.15s;
-    }
-    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-    textarea { resize: vertical; min-height: 80px; }
+    input:focus, textarea:focus, select:focus { border-color:var(--accent); }
+    textarea { resize:vertical; min-height:80px; font-family:inherit; }
 
-    /* ─── Buttons ─── */
-    .btn {
-      background: var(--accent); color: #fff; border: none; border-radius: 10px;
-      padding: 13px 20px; font-size: 1rem; font-weight: 600; cursor: pointer;
-      transition: opacity 0.15s; width: 100%; max-width: 360px;
-    }
-    .btn:active { opacity: 0.7; }
-    .btn.secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn.danger { background: var(--red); }
-    .btn.sm { padding: 8px 14px; font-size: 0.85rem; width: auto; max-width: none; border-radius: 8px; }
+    /* Buttons */
+    .btn { background:var(--accent); color:#fff; border:none; border-radius:10px; padding:13px 20px; font-size:0.95rem; font-weight:600; cursor:pointer; transition:opacity 0.15s; width:100%; max-width:360px; }
+    .btn:active { opacity:0.7; }
+    .btn.secondary { background:var(--surface); color:var(--text); border:1px solid var(--border); }
+    .btn.danger { background:var(--red); }
+    .btn.success { background:var(--green); color:#000; }
+    .btn.sm { padding:8px 14px; font-size:0.82rem; width:auto; max-width:none; border-radius:8px; }
 
-    /* ─── App Shell ─── */
-    #app { display: none; flex-direction: column; min-height: 100dvh; }
+    /* App */
+    #app { display:none; flex-direction:column; min-height:100dvh; }
+    .topbar { position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .topbar h2 { font-size:1rem; font-weight:700; flex:1; }
+    .topbar-actions { display:flex; gap:6px; }
 
-    .topbar {
-      position: sticky; top: 0; z-index: 50;
-      background: var(--bg); border-bottom: 1px solid var(--border);
-      padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
-    }
-    .topbar h2 { font-size: 1.1rem; font-weight: 700; }
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:50; background:var(--surface); border-top:1px solid var(--border); display:flex; padding-bottom:env(safe-area-inset-bottom); }
+    .nav-btn { flex:1; padding:10px 4px 8px; display:flex; flex-direction:column; align-items:center; gap:3px; border:none; background:none; color:var(--muted); font-size:0.6rem; cursor:pointer; transition:color 0.15s; }
+    .nav-btn svg { width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .nav-btn.active { color:var(--accent2); }
 
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-      background: var(--surface); border-top: 1px solid var(--border);
-      display: flex; padding-bottom: env(safe-area-inset-bottom);
-    }
-    .nav-btn {
-      flex: 1; padding: 12px 4px 10px; display: flex; flex-direction: column;
-      align-items: center; gap: 3px; border: none; background: none; color: var(--muted);
-      font-size: 0.65rem; cursor: pointer; transition: color 0.15s;
-    }
-    .nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .nav-btn.active { color: var(--accent2); }
+    .content { flex:1; padding:14px; padding-bottom:78px; }
+    .view { display:none; }
+    .view.active { display:block; }
 
-    .content { flex: 1; padding: 16px; padding-bottom: 80px; }
-    .view { display: none; }
-    .view.active { display: block; }
+    /* Cards */
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:13px 14px; margin-bottom:9px; cursor:pointer; transition:border-color 0.15s; }
+    .card:active { border-color:var(--accent); }
+    .card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+    .card-title { font-size:0.9rem; font-weight:600; line-height:1.35; flex:1; }
+    .card-meta { display:flex; gap:5px; margin-top:7px; flex-wrap:wrap; align-items:center; }
+    .card-assignee { font-size:0.72rem; color:var(--muted); }
 
-    /* ─── Cards ─── */
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px 16px; margin-bottom: 10px;
-      cursor: pointer; transition: border-color 0.15s;
-    }
-    .card:active { border-color: var(--accent); }
-    .card-title { font-size: 0.95rem; font-weight: 600; line-height: 1.35; }
-    .card-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
-    .badge {
-      font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 20px;
-      text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    .badge.in_progress { background: rgba(59,130,246,0.15); color: var(--blue); }
-    .badge.todo { background: rgba(156,163,175,0.15); color: #9ca3af; }
-    .badge.blocked { background: rgba(239,68,68,0.15); color: var(--red); }
-    .badge.in_review { background: rgba(245,158,11,0.15); color: var(--yellow); }
-    .badge.done { background: rgba(34,197,94,0.15); color: var(--green); }
-    .badge.high { background: rgba(239,68,68,0.1); color: #f87171; }
-    .badge.critical { background: rgba(239,68,68,0.2); color: var(--red); }
-    .badge.medium { background: rgba(245,158,11,0.1); color: #fbbf24; }
-    .badge.low { background: rgba(107,114,128,0.1); color: var(--muted); }
-    .identifier { font-size: 0.75rem; color: var(--muted); }
+    /* Badges */
+    .badge { font-size:0.68rem; font-weight:600; padding:2px 7px; border-radius:20px; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
+    .badge.in_progress { background:rgba(59,130,246,0.15); color:var(--blue); }
+    .badge.todo { background:rgba(156,163,175,0.15); color:#9ca3af; }
+    .badge.blocked { background:rgba(239,68,68,0.15); color:var(--red); }
+    .badge.in_review { background:rgba(245,158,11,0.15); color:var(--yellow); }
+    .badge.done { background:rgba(34,197,94,0.15); color:var(--green); }
+    .badge.backlog { background:rgba(107,114,128,0.1); color:var(--muted); }
+    .badge.high { background:rgba(239,68,68,0.1); color:#f87171; }
+    .badge.critical { background:rgba(239,68,68,0.25); color:var(--red); }
+    .badge.medium { background:rgba(245,158,11,0.1); color:#fbbf24; }
+    .badge.low { background:rgba(107,114,128,0.1); color:var(--muted); }
+    .identifier { font-size:0.7rem; color:var(--muted); }
 
-    /* ─── Detail ─── */
-    .detail-back { display: flex; align-items: center; gap: 6px; color: var(--accent2); font-size: 0.9rem; margin-bottom: 16px; cursor: pointer; }
-    .detail-back svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .detail-title { font-size: 1.15rem; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
-    .detail-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-    .detail-desc { font-size: 0.875rem; color: #c0c0c8; line-height: 1.6; white-space: pre-wrap; background: var(--surface); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; max-height: 200px; overflow-y: auto; }
-    .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; }
-    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-    .action-grid .btn { max-width: none; padding: 11px; font-size: 0.85rem; }
-    .comment-item { background: var(--surface); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; font-size: 0.85rem; }
-    .comment-author { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; }
-    .comment-body { line-height: 1.5; color: #d0d0d8; }
+    /* Detail */
+    .back-btn { display:flex; align-items:center; gap:5px; color:var(--accent2); font-size:0.88rem; margin-bottom:14px; cursor:pointer; background:none; border:none; padding:0; }
+    .back-btn svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .detail-title { font-size:1.1rem; font-weight:700; line-height:1.4; margin-bottom:10px; }
+    .detail-meta { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; align-items:center; }
+    .detail-desc { font-size:0.83rem; color:#b0b0b8; line-height:1.6; white-space:pre-wrap; background:var(--surface); border-radius:10px; padding:11px 13px; margin-bottom:14px; max-height:180px; overflow-y:auto; }
 
-    .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 40px auto; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .empty { text-align: center; color: var(--muted); padding: 40px 20px; }
-    .error-msg { background: rgba(239,68,68,0.1); color: #f87171; border-radius: 10px; padding: 12px 14px; font-size: 0.875rem; margin-bottom: 12px; }
-    .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
-    .settings-row:last-child { border-bottom: none; }
-    .settings-val { font-size: 0.8rem; color: var(--muted); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .section-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin-bottom:8px; margin-top:16px; }
+    .section-label:first-of-type { margin-top:0; }
+
+    /* Status grid */
+    .status-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:4px; }
+    .status-grid .btn { max-width:none; padding:10px; font-size:0.8rem; }
+
+    /* Delegate section */
+    .delegate-row { display:flex; gap:8px; align-items:center; margin-bottom:4px; }
+
+    /* Comments */
+    .comment-item { background:var(--surface); border-radius:9px; padding:9px 12px; margin-bottom:7px; }
+    .comment-author { font-size:0.68rem; color:var(--muted); margin-bottom:3px; }
+    .comment-body { font-size:0.83rem; line-height:1.5; color:#d0d0d8; word-break:break-word; }
+
+    /* Create form */
+    .create-form { background:var(--surface); border-radius:12px; padding:16px; }
+    .create-form .input-group { max-width:none; }
+
+    /* Filter bar */
+    .filter-bar { display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px; }
+    .filter-bar::-webkit-scrollbar { display:none; }
+    .filter-chip { background:var(--surface); border:1px solid var(--border); color:var(--muted); border-radius:20px; padding:5px 13px; font-size:0.78rem; white-space:nowrap; cursor:pointer; transition:all 0.15s; flex-shrink:0; }
+    .filter-chip.active { background:rgba(108,99,255,0.15); border-color:var(--accent); color:var(--accent2); }
+
+    /* Settings */
+    .settings-card { background:var(--surface); border-radius:12px; overflow:hidden; margin-bottom:14px; }
+    .settings-row { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid var(--border); }
+    .settings-row:last-child { border-bottom:none; }
+    .settings-val { font-size:0.78rem; color:var(--muted); max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* Utils */
+    .spinner { width:30px; height:30px; border:2.5px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.65s linear infinite; margin:36px auto; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .empty { text-align:center; color:var(--muted); padding:40px 16px; font-size:0.9rem; }
+    .error-msg { background:rgba(239,68,68,0.1); color:#f87171; border-radius:9px; padding:11px 13px; font-size:0.85rem; margin-bottom:12px; }
+    .success-msg { background:rgba(34,197,94,0.1); color:var(--green); border-radius:9px; padding:11px 13px; font-size:0.85rem; margin-bottom:12px; }
+    .divider { height:1px; background:var(--border); margin:16px 0; }
   </style>
 </head>
 <body>
 
-<!-- ═══ SETUP ═══ -->
+<!-- SETUP -->
 <div id="setup-screen">
-  <div style="font-size: 2rem;">📎</div>
+  <div style="font-size:2rem;">📎</div>
   <h1>ELEVO Aufgaben</h1>
-  <p>Einmalig die API-URL eingeben. Danach direkter Zugang ohne Passwort.</p>
+  <p>Einmalig die API-URL eingeben — danach direkter Zugang ohne Passwort.</p>
   <div class="input-group">
     <label>API-URL</label>
     <input type="text" id="api-url-input" placeholder="https://xxx.trycloudflare.com" />
   </div>
   <div id="setup-error" class="error-msg" style="display:none; max-width:360px; width:100%;"></div>
   <button class="btn" onclick="doSetup()">Verbinden</button>
-  <p style="font-size:0.75rem; color:var(--muted); max-width:280px; text-align:center;">
-    Aktuelle URL: <strong id="hint-url" style="color:var(--accent2);"></strong>
+  <p style="font-size:0.72rem; color:var(--muted); max-width:280px; text-align:center;">
+    Aktuelle URL: <span id="hint-url" style="color:var(--accent2); font-weight:600;"></span>
   </p>
 </div>
 
-<!-- ═══ APP ═══ -->
+<!-- APP -->
 <div id="app">
   <div class="topbar">
     <h2 id="topbar-title">Aufgaben</h2>
-    <button class="btn sm secondary" onclick="refreshCurrent()" style="padding:6px 10px;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-    </button>
+    <div class="topbar-actions">
+      <button class="btn sm secondary" onclick="showCreate()" id="create-btn" title="Neue Aufgabe" style="display:none; padding:6px 10px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button class="btn sm secondary" onclick="refreshCurrent()" style="padding:6px 10px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+      </button>
+    </div>
   </div>
 
   <div class="content">
+
+    <!-- Tasks View -->
     <div id="view-tasks" class="view active">
-      <div style="display:flex; gap:8px; margin-bottom:14px;">
-        <select id="filter-status" onchange="loadTasks()" style="flex:1;">
-          <option value="todo,in_progress,in_review,blocked">Aktiv</option>
-          <option value="in_progress">In Arbeit</option>
-          <option value="in_review">In Review</option>
-          <option value="todo">Todo</option>
-          <option value="blocked">Blockiert</option>
-          <option value="done">Erledigt</option>
-        </select>
-      </div>
+      <div class="filter-bar" id="filter-chips"></div>
       <div id="tasks-list"><div class="spinner"></div></div>
     </div>
 
+    <!-- Detail View -->
     <div id="view-detail" class="view">
-      <div class="detail-back" onclick="goBack()">
+      <button class="back-btn" onclick="goBack()">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
         Zurück
-      </div>
+      </button>
       <div id="detail-content"></div>
     </div>
 
-    <div id="view-settings" class="view">
-      <div class="card" style="cursor:default;">
-        <div class="settings-row">
-          <span>API-URL</span>
-          <span class="settings-val" id="settings-url-val"></span>
+    <!-- Create View -->
+    <div id="view-create" class="view">
+      <button class="back-btn" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Zurück
+      </button>
+      <div class="create-form">
+        <div style="font-size:1rem; font-weight:700; margin-bottom:16px;">Neue Aufgabe</div>
+        <div class="input-group" style="max-width:none; margin-bottom:12px;">
+          <label>Titel *</label>
+          <input type="text" id="new-title" placeholder="Was soll erledigt werden?" />
         </div>
-        <div class="settings-row">
-          <span>Nutzer</span>
-          <span class="settings-val" id="settings-user-val"></span>
+        <div class="input-group" style="max-width:none; margin-bottom:12px;">
+          <label>Beschreibung</label>
+          <textarea id="new-desc" placeholder="Details, Kontext, Anforderungen…"></textarea>
         </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div class="input-group" style="max-width:none;">
+            <label>Priorität</label>
+            <select id="new-priority">
+              <option value="high">Hoch</option>
+              <option value="critical">Kritisch</option>
+              <option value="medium" selected>Mittel</option>
+              <option value="low">Niedrig</option>
+            </select>
+          </div>
+          <div class="input-group" style="max-width:none;">
+            <label>Status</label>
+            <select id="new-status">
+              <option value="todo" selected>Todo</option>
+              <option value="in_progress">In Arbeit</option>
+              <option value="backlog">Backlog</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group" style="max-width:none; margin-bottom:12px;">
+          <label>Zuweisen an Agent</label>
+          <select id="new-assignee">
+            <option value="">— Kein Agent —</option>
+          </select>
+        </div>
+        <div class="input-group" style="max-width:none; margin-bottom:16px;">
+          <label>Ziel</label>
+          <select id="new-goal">
+            <option value="">— Kein Ziel —</option>
+          </select>
+        </div>
+        <div id="create-error" class="error-msg" style="display:none;"></div>
+        <div id="create-success" class="success-msg" style="display:none;"></div>
+        <button class="btn" style="max-width:none;" onclick="submitCreate()">Aufgabe erstellen</button>
       </div>
-      <button class="btn danger" style="margin-top:16px;" onclick="doReset()">URL zurücksetzen</button>
     </div>
+
+    <!-- Settings View -->
+    <div id="view-settings" class="view">
+      <div class="settings-card">
+        <div class="settings-row"><span>API-URL</span><span class="settings-val" id="settings-url-val"></span></div>
+        <div class="settings-row"><span>Nutzer</span><span class="settings-val" id="settings-user-val"></span></div>
+        <div class="settings-row"><span>Firma</span><span class="settings-val">ELEVO SOLUTIONS</span></div>
+      </div>
+      <button class="btn danger" style="max-width:none;" onclick="doReset()">URL zurücksetzen</button>
+    </div>
+
   </div>
 
   <nav class="bottom-nav">
     <button class="nav-btn active" id="nav-tasks" onclick="switchView('tasks')">
       <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       Aufgaben
+    </button>
+    <button class="nav-btn" id="nav-create-nav" onclick="showCreate()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Neu
     </button>
     <button class="nav-btn" id="nav-settings" onclick="switchView('settings')">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -201,24 +251,45 @@
 
 <script>
 const COMPANY_ID = 'bc3187c2-d909-4993-a284-cea521dfd3b4';
-const CURRENT_TUNNEL = 'https://introduces-developments-yoga-icons.trycloudflare.com';
+const TUNNEL_URL = 'https://introduces-developments-yoga-icons.trycloudflare.com';
+const STATUS_FILTERS = [
+  { label: 'Aktiv', value: 'todo,in_progress,in_review,blocked' },
+  { label: 'In Arbeit', value: 'in_progress' },
+  { label: 'In Review', value: 'in_review' },
+  { label: 'Blockiert', value: 'blocked' },
+  { label: 'Todo', value: 'todo' },
+  { label: 'Erledigt', value: 'done' },
+];
 
 let API_URL = '';
 let sessionUser = null;
 let currentView = 'tasks';
 let previousView = 'tasks';
 let currentTaskId = null;
+let currentFilter = 'todo,in_progress,in_review,blocked';
+let agents = [];
+let goals = [];
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('hint-url').textContent = CURRENT_TUNNEL;
-  document.getElementById('api-url-input').value = CURRENT_TUNNEL;
-
+  document.getElementById('hint-url').textContent = TUNNEL_URL;
+  document.getElementById('api-url-input').value = TUNNEL_URL;
+  buildFilterChips();
   const saved = localStorage.getItem('pc_api_url');
-  if (saved) {
-    API_URL = saved;
-    tryConnect();
-  }
+  if (saved) { API_URL = saved; tryConnect(); }
 });
+
+function buildFilterChips() {
+  const bar = document.getElementById('filter-chips');
+  bar.innerHTML = STATUS_FILTERS.map(f =>
+    `<button class="filter-chip${f.value === currentFilter ? ' active' : ''}" onclick="setFilter('${f.value}')">${f.label}</button>`
+  ).join('');
+}
+
+function setFilter(val) {
+  currentFilter = val;
+  buildFilterChips();
+  loadTasks();
+}
 
 async function doSetup() {
   const url = document.getElementById('api-url-input').value.trim().replace(/\/$/, '');
@@ -230,28 +301,37 @@ async function doSetup() {
 }
 
 async function tryConnect() {
-  const errEl = document.getElementById('setup-error');
   try {
     const res = await apiFetch('/api/auth/get-session');
-    if (!res.ok) throw new Error('Verbindung fehlgeschlagen. Bitte URL prüfen.');
+    if (!res.ok) throw new Error('Verbindung fehlgeschlagen.');
     const data = await res.json();
-    if (!data.user) throw new Error('Keine gültige Session. Bitte URL prüfen.');
+    if (!data.user) throw new Error('Keine Session. URL prüfen.');
     sessionUser = data.user;
     localStorage.setItem('pc_api_url', API_URL);
+    await Promise.all([loadAgents(), loadGoals()]);
     showApp();
   } catch (e) {
+    const errEl = document.getElementById('setup-error');
     errEl.textContent = e.message;
     errEl.style.display = 'block';
-    if (errEl.style.display !== 'block') {
-      document.getElementById('setup-screen').style.display = 'flex';
-    }
   }
 }
 
-function doReset() {
-  localStorage.removeItem('pc_api_url');
-  location.reload();
+async function loadAgents() {
+  try {
+    const res = await apiFetch(`/api/companies/${COMPANY_ID}/agents`);
+    if (res.ok) agents = await res.json();
+  } catch {}
 }
+
+async function loadGoals() {
+  try {
+    const res = await apiFetch(`/api/companies/${COMPANY_ID}/goals`);
+    if (res.ok) goals = await res.json();
+  } catch {}
+}
+
+function doReset() { localStorage.removeItem('pc_api_url'); location.reload(); }
 
 function apiFetch(path, options = {}) {
   return fetch(API_URL + path, {
@@ -262,10 +342,15 @@ function apiFetch(path, options = {}) {
 
 function showApp() {
   document.getElementById('setup-screen').style.display = 'none';
-  const app = document.getElementById('app');
-  app.style.display = 'flex';
+  document.getElementById('app').style.display = 'flex';
   document.getElementById('settings-url-val').textContent = API_URL;
   document.getElementById('settings-user-val').textContent = sessionUser?.name || 'Board';
+
+  const agentSel = document.getElementById('new-assignee');
+  agents.forEach(a => agentSel.innerHTML += `<option value="${a.id}">${a.name}</option>`);
+  const goalSel = document.getElementById('new-goal');
+  goals.forEach(g => goalSel.innerHTML += `<option value="${g.id}">${g.title}</option>`);
+
   loadTasks();
 }
 
@@ -275,7 +360,7 @@ function refreshCurrent() {
 }
 
 function switchView(view) {
-  ['tasks', 'settings', 'detail'].forEach(v => {
+  ['tasks','detail','create','settings'].forEach(v => {
     document.getElementById('view-' + v).classList.remove('active');
     const nav = document.getElementById('nav-' + v);
     if (nav) nav.classList.remove('active');
@@ -284,28 +369,54 @@ function switchView(view) {
   const nav = document.getElementById('nav-' + view);
   if (nav) nav.classList.add('active');
   currentView = view;
-  const titles = { tasks: 'Aufgaben', settings: 'Einstellungen', detail: 'Aufgabe' };
+
+  document.getElementById('create-btn').style.display = view === 'tasks' ? '' : 'none';
+  const titles = { tasks:'Aufgaben', detail:'Aufgabe', create:'Neue Aufgabe', settings:'Einstellungen' };
   document.getElementById('topbar-title').textContent = titles[view] || 'ELEVO';
 }
 
-function goBack() { switchView(previousView || 'tasks'); }
+function goBack() { switchView(previousView === 'create' ? 'tasks' : (previousView || 'tasks')); }
 
+function showCreate() {
+  previousView = currentView;
+  document.getElementById('create-error').style.display = 'none';
+  document.getElementById('create-success').style.display = 'none';
+  switchView('create');
+}
+
+// ── Tasks ──
 async function loadTasks() {
   const el = document.getElementById('tasks-list');
-  const status = document.getElementById('filter-status').value;
   el.innerHTML = '<div class="spinner"></div>';
   try {
-    const res = await apiFetch(`/api/companies/${COMPANY_ID}/issues?status=${status}&limit=50`);
+    const res = await apiFetch(`/api/companies/${COMPANY_ID}/issues?status=${currentFilter}&limit=60`);
     if (!res.ok) throw new Error('Fehler beim Laden.');
     const data = await res.json();
     const items = Array.isArray(data) ? data : (data.issues || []);
-    if (!items.length) { el.innerHTML = '<div class="empty">Keine Aufgaben gefunden.</div>'; return; }
+    if (!items.length) { el.innerHTML = '<div class="empty">Keine Aufgaben in dieser Ansicht.</div>'; return; }
     el.innerHTML = items.map(renderCard).join('');
   } catch (e) {
     el.innerHTML = `<div class="error-msg">${escHtml(e.message)}</div>`;
   }
 }
 
+function renderCard(item) {
+  const assigneeName = item.assigneeAgent?.name || item.assigneeUser?.name || '';
+  return `
+    <div class="card" onclick="openDetail('${item.id}')">
+      <div class="card-header">
+        <div class="card-title">${escHtml(item.title || '(Kein Titel)')}</div>
+      </div>
+      <div class="card-meta">
+        <span class="badge ${item.status}">${statusLabel(item.status)}</span>
+        ${item.priority ? `<span class="badge ${item.priority}">${priorityLabel(item.priority)}</span>` : ''}
+        <span class="identifier">${escHtml(item.identifier || '')}</span>
+        ${assigneeName ? `<span class="card-assignee">→ ${escHtml(assigneeName)}</span>` : ''}
+      </div>
+    </div>`;
+}
+
+// ── Detail ──
 async function loadDetail(issueId) {
   currentTaskId = issueId;
   const el = document.getElementById('detail-content');
@@ -313,12 +424,16 @@ async function loadDetail(issueId) {
   try {
     const [issueRes, commentsRes] = await Promise.all([
       apiFetch(`/api/issues/${issueId}`),
-      apiFetch(`/api/issues/${issueId}/comments?order=desc&limit=10`)
+      apiFetch(`/api/issues/${issueId}/comments?order=desc&limit=15`)
     ]);
     if (!issueRes.ok) throw new Error('Aufgabe nicht gefunden.');
     const issue = await issueRes.json();
-    const commentsData = commentsRes.ok ? await commentsRes.json() : [];
-    const comments = Array.isArray(commentsData) ? commentsData : (commentsData.comments || []);
+    const comments = commentsRes.ok ? (await commentsRes.json()) : [];
+    const currentAssignee = issue.assigneeAgentId || '';
+
+    const agentOptions = agents.map(a =>
+      `<option value="${a.id}" ${a.id === currentAssignee ? 'selected' : ''}>${a.name}</option>`
+    ).join('');
 
     el.innerHTML = `
       <div class="detail-title">${escHtml(issue.title)}</div>
@@ -326,62 +441,45 @@ async function loadDetail(issueId) {
         <span class="badge ${issue.status}">${statusLabel(issue.status)}</span>
         ${issue.priority ? `<span class="badge ${issue.priority}">${priorityLabel(issue.priority)}</span>` : ''}
         <span class="identifier">${escHtml(issue.identifier || '')}</span>
+        ${issue.assigneeAgent ? `<span class="card-assignee" style="font-size:0.78rem; color:var(--accent2);">→ ${escHtml(issue.assigneeAgent.name)}</span>` : ''}
       </div>
       ${issue.description ? `<div class="detail-desc">${escHtml(issue.description)}</div>` : ''}
+
       <div class="section-label">Status ändern</div>
-      <div class="action-grid">
-        <button class="btn sm" onclick="updateStatus('${issueId}','done')">✅ Erledigt</button>
-        <button class="btn sm secondary" onclick="updateStatus('${issueId}','in_progress')">▶ In Arbeit</button>
+      <div class="status-grid">
+        <button class="btn sm success" onclick="updateStatus('${issueId}','done')">✅ Erledigt</button>
+        <button class="btn sm" onclick="updateStatus('${issueId}','in_progress')">▶ In Arbeit</button>
         <button class="btn sm secondary" onclick="updateStatus('${issueId}','in_review')">👁 In Review</button>
         <button class="btn sm danger sm" onclick="updateStatus('${issueId}','blocked')">🔒 Blockiert</button>
+        <button class="btn sm secondary" onclick="updateStatus('${issueId}','todo')">📋 Todo</button>
+        <button class="btn sm secondary" onclick="updateStatus('${issueId}','backlog')">📦 Backlog</button>
       </div>
-      <div class="section-label" style="margin-top:16px;">Kommentar hinzufügen</div>
-      <textarea id="comment-input-${issueId}" placeholder="Kommentar schreiben…"></textarea>
-      <button class="btn sm" style="margin-top:8px;" onclick="addComment('${issueId}')">Senden</button>
-      <div class="section-label" style="margin-top:20px;">Letzte Kommentare</div>
+
+      <div class="section-label">An Agent delegieren</div>
+      <div class="delegate-row">
+        <select id="delegate-select-${issueId}" style="flex:1;">
+          <option value="">— Kein Agent —</option>
+          ${agentOptions}
+        </select>
+        <button class="btn sm" style="flex-shrink:0;" onclick="delegateTask('${issueId}')">Zuweisen</button>
+      </div>
+      <div id="delegate-msg-${issueId}"></div>
+
+      <div class="section-label">Kommentar hinzufügen</div>
+      <textarea id="comment-input-${issueId}" placeholder="Kommentar schreiben…" style="margin-bottom:8px;"></textarea>
+      <button class="btn sm" onclick="addComment('${issueId}')">Senden</button>
+
+      <div class="section-label">Kommentare (${comments.length})</div>
       <div id="comments-${issueId}">
         ${comments.length ? comments.map(c => `
           <div class="comment-item">
-            <div class="comment-author">${escHtml(c.authorAgentId || c.authorUserId || '?')} · ${formatDate(c.createdAt)}</div>
+            <div class="comment-author">${escHtml(c.authorAgentId ? (agents.find(a=>a.id===c.authorAgentId)?.name || c.authorAgentId) : (c.authorUserId || '?'))} · ${formatDate(c.createdAt)}</div>
             <div class="comment-body">${escHtml(c.body || '')}</div>
-          </div>`).join('') : '<div class="empty" style="padding:12px 0;">Keine Kommentare.</div>'}
-      </div>
-    `;
+          </div>`).join('') : '<div class="empty" style="padding:10px 0; font-size:0.82rem;">Keine Kommentare.</div>'}
+      </div>`;
   } catch (e) {
     el.innerHTML = `<div class="error-msg">${escHtml(e.message)}</div>`;
   }
-}
-
-async function updateStatus(issueId, status) {
-  try {
-    const res = await apiFetch(`/api/issues/${issueId}`, { method: 'PATCH', body: JSON.stringify({ status }) });
-    if (!res.ok) throw new Error('Update fehlgeschlagen.');
-    await loadDetail(issueId);
-  } catch (e) { alert(e.message); }
-}
-
-async function addComment(issueId) {
-  const input = document.getElementById('comment-input-' + issueId);
-  const body = input.value.trim();
-  if (!body) return;
-  try {
-    const res = await apiFetch(`/api/issues/${issueId}/comments`, { method: 'POST', body: JSON.stringify({ body }) });
-    if (!res.ok) throw new Error('Kommentar fehlgeschlagen.');
-    input.value = '';
-    await loadDetail(issueId);
-  } catch (e) { alert(e.message); }
-}
-
-function renderCard(item) {
-  return `
-    <div class="card" onclick="openDetail('${item.id}')">
-      <div class="card-title">${escHtml(item.title || '(Kein Titel)')}</div>
-      <div class="card-meta">
-        ${item.status ? `<span class="badge ${item.status}">${statusLabel(item.status)}</span>` : ''}
-        ${item.priority ? `<span class="badge ${item.priority}">${priorityLabel(item.priority)}</span>` : ''}
-        ${item.identifier ? `<span class="identifier">${escHtml(item.identifier)}</span>` : ''}
-      </div>
-    </div>`;
 }
 
 function openDetail(issueId) {
@@ -390,10 +488,91 @@ function openDetail(issueId) {
   loadDetail(issueId);
 }
 
-const statusLabel = s => ({todo:'Todo',in_progress:'In Arbeit',in_review:'In Review',blocked:'Blockiert',done:'Erledigt',backlog:'Backlog',cancelled:'Abgebrochen'}[s] || s);
-const priorityLabel = p => ({critical:'Kritisch',high:'Hoch',medium:'Mittel',low:'Niedrig'}[p] || p);
+async function updateStatus(issueId, status) {
+  try {
+    const res = await apiFetch(`/api/issues/${issueId}`, { method:'PATCH', body:JSON.stringify({status}) });
+    if (!res.ok) throw new Error('Update fehlgeschlagen.');
+    await loadDetail(issueId);
+    if (currentFilter !== 'done' && status === 'done') loadTasks();
+  } catch (e) { alert(e.message); }
+}
+
+async function delegateTask(issueId) {
+  const sel = document.getElementById(`delegate-select-${issueId}`);
+  const agentId = sel.value;
+  const msgEl = document.getElementById(`delegate-msg-${issueId}`);
+  msgEl.innerHTML = '';
+  try {
+    const body = agentId
+      ? { assigneeAgentId: agentId, assigneeUserId: null }
+      : { assigneeAgentId: null, assigneeUserId: null };
+    const res = await apiFetch(`/api/issues/${issueId}`, { method:'PATCH', body:JSON.stringify(body) });
+    if (!res.ok) throw new Error('Delegation fehlgeschlagen.');
+    const agentName = agentId ? (agents.find(a=>a.id===agentId)?.name || agentId) : 'Niemand';
+    msgEl.innerHTML = `<div class="success-msg" style="margin-top:6px;">✓ Zugewiesen an: ${escHtml(agentName)}</div>`;
+    await loadDetail(issueId);
+  } catch (e) {
+    msgEl.innerHTML = `<div class="error-msg" style="margin-top:6px;">${escHtml(e.message)}</div>`;
+  }
+}
+
+async function addComment(issueId) {
+  const input = document.getElementById('comment-input-' + issueId);
+  const body = input.value.trim();
+  if (!body) return;
+  try {
+    const res = await apiFetch(`/api/issues/${issueId}/comments`, { method:'POST', body:JSON.stringify({body}) });
+    if (!res.ok) throw new Error('Kommentar fehlgeschlagen.');
+    input.value = '';
+    await loadDetail(issueId);
+  } catch (e) { alert(e.message); }
+}
+
+// ── Create ──
+async function submitCreate() {
+  const title = document.getElementById('new-title').value.trim();
+  const errEl = document.getElementById('create-error');
+  const sucEl = document.getElementById('create-success');
+  errEl.style.display = 'none';
+  sucEl.style.display = 'none';
+  if (!title) { errEl.textContent = 'Titel ist Pflichtfeld.'; errEl.style.display = 'block'; return; }
+
+  const payload = {
+    title,
+    description: document.getElementById('new-desc').value.trim() || undefined,
+    priority: document.getElementById('new-priority').value,
+    status: document.getElementById('new-status').value,
+    companyId: COMPANY_ID,
+  };
+  const agentId = document.getElementById('new-assignee').value;
+  if (agentId) payload.assigneeAgentId = agentId;
+  const goalId = document.getElementById('new-goal').value;
+  if (goalId) payload.goalId = goalId;
+
+  try {
+    const res = await apiFetch(`/api/companies/${COMPANY_ID}/issues`, { method:'POST', body:JSON.stringify(payload) });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Erstellung fehlgeschlagen.');
+    }
+    const created = await res.json();
+    sucEl.textContent = `✓ Aufgabe ${created.identifier || ''} erstellt!`;
+    sucEl.style.display = 'block';
+    document.getElementById('new-title').value = '';
+    document.getElementById('new-desc').value = '';
+    document.getElementById('new-assignee').value = '';
+    setTimeout(() => { switchView('tasks'); loadTasks(); }, 1500);
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+// ── Helpers ──
+const statusLabel = s => ({todo:'Todo',in_progress:'In Arbeit',in_review:'In Review',blocked:'Blockiert',done:'Erledigt',backlog:'Backlog',cancelled:'Abgebrochen'}[s]||s);
+const priorityLabel = p => ({critical:'Kritisch',high:'Hoch',medium:'Mittel',low:'Niedrig'}[p]||p);
 function escHtml(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function formatDate(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+function formatDate(iso) { if(!iso)return''; return new Date(iso).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
 </script>
 </body>
 </html>
